@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-export default class Parent extends Component {
+class Parent extends Component {
 
     constructor () {
         super()
@@ -15,15 +16,12 @@ export default class Parent extends Component {
     }
 
     save = () => {
-        let todolist = Object.assign([],this.state.todolist);
-        todolist.push({ title: this.state.title, description: this.state.description, status:false })
-        this.setState({todolist:todolist , title:'', description: ''})
+        this.props.AddToTheTodos({ title: this.state.title, description: this.state.description, status:false })
+        this.setState({ title:'', description: '' })
     }
 
     toggleToDo =(index) => {
-        let todolist = Object.assign([],this.state.todolist);
-        todolist[index].status=!todolist[index].status;
-        this.setState({todolist:todolist , title:'', description: ''})
+        this.props.toggleToDo(index)
     }
 
     onEdit = (index) => {
@@ -56,7 +54,7 @@ export default class Parent extends Component {
                 <h4>Completed</h4>
                 <ul>
                     {
-                        this.state.todolist.map((todoItem,index) => {
+                        this.props.todolist.map((todoItem,index) => {
                             if(todoItem.status) {
                             return (
                                 <li key = {index}>
@@ -75,7 +73,7 @@ export default class Parent extends Component {
                 <h4> Un completed</h4>
                 <ul>
                     {
-                        this.state.todolist.map((todoItem,index) => {
+                        this.props.todolist.map((todoItem,index) => {
                             if(!todoItem.status) {
                             return (
                                 <li key = {index}>
@@ -96,3 +94,33 @@ export default class Parent extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        todolist: state.todolist
+    }
+}
+const AddToTheTodos = (todo) => {
+    return {
+        type: 'ADD_TODO',
+        todo
+    }
+}
+const toggleToDo = (index) => {
+    return {
+        type: 'CHANGE_THE_STATUS',
+        index
+    }
+}
+
+const UpdateTodo = (index, title, description) => {
+    return {
+        type: 'UPDATE_TODO',
+        index,
+        title,
+        description
+    }
+}
+
+export default connect(mapStateToProps, { AddToTheTodos, toggleToDo, UpdateTodo })(Parent)
+
+
