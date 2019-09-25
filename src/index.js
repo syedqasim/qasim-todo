@@ -18,13 +18,16 @@ const todolistReducer = (state = [], action) => {
         let NewState = Object.assign([], state)
         NewState[action.index].status = !NewState[action.index].status
         return NewState
-    } else if(action.type === 'UPDATE_TO_NEW') {
+    } else if(action.type === 'UPDATE_TODO') {
         let NewState = Object.assign([], state)
         /* 
             Take the index from the action which you will pass from the component
             then modify to the new values which you will take from the component
             return new state
         */
+        NewState[action.index].title = action.title
+        NewState[action.index].description = action.description
+        return NewState
     }
     return state
 }
