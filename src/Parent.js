@@ -128,6 +128,10 @@ class Parent extends Component {
     }
 }
 const mapStateToProps = (state) => {
+    // In case of Thunk
+    // return(dispatch) => {
+    //     dispatch({type: '',ajsdlkjasd,aksdjalksd,aksdjald})
+    // }
     return {
         todolist: state.todolist
     }
